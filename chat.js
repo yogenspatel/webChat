@@ -3,11 +3,7 @@ var fs = require('fs');
 var io = require('socket.io');
 
 var port = process.env.PORT || 3000;
-// assuming io is the Socket.IO server object
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
+
 
 var clients = [];
 var server = http.createServer(function(request, response){
@@ -20,7 +16,10 @@ var server = http.createServer(function(request, response){
 });
 
 var socket = io.listen(server);
-
+socket.configure(function () { 
+  socket.set("transports", ["xhr-polling"]); 
+  socket.set("polling duration", 10); 
+});
 
 
 socket.on('connection', function(client) {
