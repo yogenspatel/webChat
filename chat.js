@@ -2,6 +2,12 @@ var http = require('http');
 var fs = require('fs');
 var io = require('socket.io');
 
+// assuming io is the Socket.IO server object
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
+});
+
 var clients = [];
 var server = http.createServer(function(request, response){
 	response.writeHead(200, {
