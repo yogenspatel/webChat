@@ -2,6 +2,7 @@ var http = require('http');
 var fs = require('fs');
 var io = require('socket.io');
 
+var port = process.env.PORT || 3000;
 // assuming io is the Socket.IO server object
 io.configure(function () { 
   io.set("transports", ["xhr-polling"]); 
@@ -48,4 +49,4 @@ socket.on('connection', function(client) {
 	});
 });
 
-server.listen(44748);
+server.listen(port);

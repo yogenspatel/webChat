@@ -27,14 +27,7 @@
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			$(function(){
-				var socket = io.connect('http://chatyogen.herokuapp.com:44748');
-				//var socket = new io.Socket('localhost', {port: 4000});
-				//console.log(socket);
-				//socket.connect();
-				//console.log('connecting...');
-				//socket.on('connect', function() {
-				//	console.log('connecting..........');
-				//});
+				var socket = io.connect('http://chatyogen.herokuapp.com');
 				socket.on('message', function(msg) {
 					$('#log ul').append('<li>' + msg.data + '</li>');
 					window.scrollBy(0, 1000000000000);
