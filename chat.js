@@ -41,9 +41,11 @@ socket.on('connection', function(client) {
 			//client.emit('clientData', {data: ('Welcome, ' + username + '!')});
 			return;
 		}
-		sendData = username + ' said: ' + msg.data;
-		client.broadcast.emit('message', { data: sendData }); //To broadcast other clients
-		client.emit('message', { data: sendData }); //local client
+		if(msg.data) {
+			sendData = username + ' said: ' + msg.data;
+			client.broadcast.emit('message', { data: sendData }); //To broadcast other clients
+			client.emit('message', { data: sendData }); //local client
+		}
 		//socket.broadcast.emit(username + ' said: ' + msg.data);
 	});
 });

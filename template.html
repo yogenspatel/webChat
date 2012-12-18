@@ -3,9 +3,14 @@
 	<head>
 		<title>Chat Server</title>
 		<style type="text/css">
+		#chatContainer {
+			width: 400px;
+			border: 1px solid;
+		}
 		#log {
 			margin-bottom: 100px;
 			width: 100%;
+			height: 100px;
 		}
 		#log ul {
 			padding: 0px;
@@ -14,34 +19,39 @@
 		#log ul li{
 			list-style-type: none;
 		}
-		#console {
-			border: 1px solid #CCC;
-			position: fixed;
-			bottom: 0px;
-			width: 100%;
-			font-size: 16px;
-		}
-		#console input{ width: 100%;}
+		
+		#console textarea {margin-left: 1%; width: 80%;height: 100px;}
+		#console button {width: 16%; height: 60px;}
 		</style>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 		<script type="text/javascript">
 			$(function(){
-				var socket = io.connect('http://chatyogen.herokuapp.com');
+				$('#entry').focus();
+				var socket = io.connect('http://localhost:3000');
 				socket.on('message', function(msg) {
 					$('#log ul').append('<li>' + msg.data + '</li>');
-					window.scrollBy(0, 1000000000000);
+					//window.scrollBy(0, 1000000000000);
 					$('#entry').focus();
 				});
 
-				$('#entry').keypress(function(event) {
+				$('#entry').keyup(function(event) {
 					if(event.keyCode == 13) {
+						var msg = $(this).val();
+						if(msg) {
+							socket.emit('emitData', { data: msg });
+							$(this).val('');
+						}
+					}
+				});
+				
+				$('#send').click(function(event) {
 						var msg = $('#entry').val();
 						if(msg) {
 							socket.emit('emitData', { data: msg });
 							$('#entry').val('');
+							//$('#entry').focus();
 						}
-					}
 				});
 
 			});
@@ -49,11 +59,14 @@
 		
 	</head>
 	<body>
+		<div id="chatContainer">
 		<h1>Welcome to Chat Server !</h1>
 		<h2>Please Enter your User name: </h2>
 		<div id="log"><ul></ul></div>
 		<div id="console">
-			<input type="text" id="entry" />
+			<textarea id="entry"></textarea>
+			<button id="send">Send</button>
+		</div>
 		</div>
 	</body>
 </html>
