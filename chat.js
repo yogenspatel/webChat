@@ -63,6 +63,17 @@ db.open(function(err, db) {
 var server = new Server('mongodb://yogen:welcome1@ds047387.mongolab.com:47387/heroku_app10771813');
 db = new Db('heroku_app10771813', server);
 
+db.open(function(err, db) {
+    if(!err) {
+        console.log("Connected to 'heroku_app10771813' database");
+        db.collection('chatusers', {safe:true}, function(err, collection) {
+            if (err) {
+                console.log("The 'chatusers' collection doesn't exist.");
+            }
+        });
+    }
+});
+
 /*mongo.Db.connect(mongoUri, function (err, db) {
   db = db;
   db.collection('chatusers', function(er, collection) {
