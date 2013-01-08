@@ -37,7 +37,7 @@
 <script type="text/javascript">
 	$(function(){
 		$('#entry').focus();
-		var socket = io.connect('http://localhost:3000');
+		var socket = io.connect('http://chatyogen.herokuapp.com');
 		socket.on('message', function(msg) {
 			$('#log ul').append('<li>' + msg.data + '</li>');
 			$('#entry').focus();
