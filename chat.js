@@ -60,7 +60,7 @@ db.open(function(err, db) {
 });
 */
 
-var server = new Server('mongodb://yogen:welcome1@ds047387.mongolab.com:47387/heroku_app10771813');
+var server = new Server('mongodb://yogen:welcome1@ds047387.mongolab.com', 47387);
 db = new Db('heroku_app10771813', server);
 
 db.open(function(err, db) {
