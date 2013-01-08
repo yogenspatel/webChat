@@ -45,8 +45,8 @@ var Server = mongo.Server,
     Db = mongo.Db,
     BSON = mongo.BSONPure;
  
-/*var server = new Server('yogen:welcome@ds047387.mongolab.com', 47387, {auto_reconnect: true});
-db = new Db('heroku_app10771813', server);
+/*var server = new Server('localhost', 27017, {auto_reconnect: true});
+db = new Db('test', server);
  
 db.open(function(err, db) {
     if(!err) {
@@ -60,7 +60,7 @@ db.open(function(err, db) {
 });
 */
 
-var server = new Server('mongodb://yogen:welcome1@ds047387.mongolab.com', 47387);
+/*var server = new Server('mongodb://heroku_app10771813:srlb97d68e21hjrmu8g29mdf8g@ds047387.mongolab.com:47387/heroku_app10771813', 47387);
 db = new Db('heroku_app10771813', server);
 
 db.open(function(err, db) {
@@ -73,16 +73,18 @@ db.open(function(err, db) {
         });
     }
 });
+*/
 
-/*mongo.Db.connect(mongoUri, function (err, db) {
-  db = db;
-  db.collection('chatusers', function(er, collection) {
-  	if (err) {
-    	console.log("The 'chatusers' collection doesn't exist.");
-    }
+mongo.Db.connect(mongoUri, function (err, _db) {
+  db = _db;
+
+  db.collection('chatusers', function(err, collection) {
+	   if (err) {
+	      console.log("The 'chatusers' collection doesn't exist.");
+       }
   });
 });
-*/
+
 app.use(partials());
 
 app.get('/', function(req, res) {
