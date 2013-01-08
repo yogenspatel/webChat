@@ -34,27 +34,41 @@ app.configure('development', function(){
 
 
 var mongo = require('mongodb');
- 
+
+var mongoUri = process.env.MONGOLAB_URI || 
+  process.env.MONGOHQ_URL || 
+  'mongodb://localhost:27017/test';
+  
 var ObjectID = mongo.ObjectID;
 
 var Server = mongo.Server,
     Db = mongo.Db,
     BSON = mongo.BSONPure;
  
-var server = new Server('yogen.mongohq.com', 10099, {auto_reconnect: true});
-db = new Db('app9017170', server);
+var server = new Server('ds047387-a.mongolab.com/10.38.119.20', 47387, {auto_reconnect: true});
+db = new Db('heroku_app10771813', server);
  
 db.open(function(err, db) {
     if(!err) {
-        console.log("Connected to 'test' database");
-        db.collection('mydb', {safe:true}, function(err, collection) {
+        console.log("Connected to 'heroku_app10771813' database");
+        db.collection('chatusers', {safe:true}, function(err, collection) {
             if (err) {
-                console.log("The 'mydb' collection doesn't exist.");
+                console.log("The 'chatusers' collection doesn't exist.");
             }
         });
     }
 });
 
+
+/*mongo.Db.connect(mongoUri, function (err, db) {
+  db = db;
+  db.collection('chatusers', function(er, collection) {
+  	if (err) {
+    	console.log("The 'chatusers' collection doesn't exist.");
+    }
+  });
+});
+*/
 app.use(partials());
 
 app.get('/', function(req, res) {
@@ -72,7 +86,7 @@ app.post('/reg_success', function(req, res) {
 	var repass =  req.body.repass;
 	var email = req.body.email;
 	if(full_name && email) {
-		db.collection('mydb', function(err, collection) { 
+		db.collection('chatusers', function(err, collection) { 
 			collection.findOne({'email': email}, {safe: true}, function(err, item){
 				if(!item || !item._id) {
 					if(pass === repass) {
@@ -86,7 +100,7 @@ app.post('/reg_success', function(req, res) {
 						
 						console.log("Inserting Record: ");
 						console.log(record);
-						db.collection('mydb', function(err, collection) { 
+						db.collection('chatusers', function(err, collection) { 
 							collection.insert(record, {safe:true}, function(err, result){});
 						});
 						
@@ -133,7 +147,7 @@ app.get('/enter_chat', function(req, res) {
 	var userCookie = req.cookies.userCookie;
 	if(userCookie) {
 		var objId = new ObjectID(userCookie);
-		db.collection('mydb', function(err, collection) {
+		db.collection('chatusers', function(err, collection) {
 			collection.findOne({_id: objId}, function(err, item){
 				res.render('enter_chat.ejs', {
 					title: 'Enter Chat',
@@ -154,7 +168,7 @@ app.get('/enter_chat', function(req, res) {
 app.post('/enter_chat', function(req, res) {
 	var username = req.body.user;
 	var pass =  crypto.createHash('md5').update(req.body.password).digest("hex");
-	db.collection('mydb', function(err, collection) { 
+	db.collection('chatusers', function(err, collection) { 
 		collection.findOne({ $and: [{'email': username}, {'password': pass}]}, function(err, item){
 			if(item && item._id) {
 				res.cookie('userCookie', item._id);
@@ -240,13 +254,13 @@ app.post('/update_success', function(req, res) {
 			if(pass === repass) {
 				var objId = new ObjectID(userCookie);
 				if(!pass) {
-					db.collection('mydb', function(err, collection) {
+					db.collection('chatusers', function(err, collection) {
 						collection.update({ _id: objId }, {$set: { fullname: full_name, email: email }});
 					});
 				}
 				else {
 					var passCrypt = crypto.createHash('md5').update(pass).digest("hex");
-					db.collection('mydb', function(err, collection) { 
+					db.collection('chatusers', function(err, collection) { 
 						collection.update({ _id: objId }, {$set: { fullname: full_name, email: email, password: passCrypt }});
 					});
 				}
@@ -288,7 +302,7 @@ app.get('/delete_success', function(req, res) {
 	var userCookie = req.cookies.userCookie;
 	if(userCookie) {
 		var objId = new ObjectID(userCookie);
-		db.collection('mydb', function(err, collection) {
+		db.collection('chatusers', function(err, collection) {
 			collection.remove({_id: objId}, function(err, item){		
 			});
 		});
