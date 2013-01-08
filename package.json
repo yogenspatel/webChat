@@ -1,8 +1,21 @@
 {
   "name": "webChat",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  
+  "main": "chat.js",
   "engines": {
     "node": "0.8.x",
-    "npm": "1.1.x"
+    "npm":  "1.1.x"
   }
+  "dependencies": {
+	  "express": "*",
+	  "mongodb": "*",
+	  "ejs": "*",
+	  "crypto": "*",
+	  "socket.io": "*",
+	  "path": "*",
+	  "express-partials": "*"  
+  },
+  "author": "Yogen Patel",
+  "licence": "BSD"
 }

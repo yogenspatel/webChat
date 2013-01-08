@@ -1,0 +1,66 @@
+<style type="text/css">
+	#chatContainer {
+		width: 400px;
+		border: 1px solid;
+	}
+	#log {
+		margin-bottom: 100px;
+		width: 100%;
+		height: 100px;
+	}
+	#log ul {
+		padding: 0px;
+		margin: 0px;
+	}
+	#log ul li{
+		list-style-type: none;
+	}
+	
+	#console textarea {margin-left: 1%; width: 80%;height: 100px;}
+	#console button {width: 16%; height: 60px;}
+	.profile {float: right}
+</style>
+
+
+<h1>Welcome <%= username%>,</h1>
+<div class="profile"><a href="/update_profile">Update Profile</a> | <a href="/">Log Out</a></div>
+<div id="chatContainer">
+	<div id="log"><ul></ul></div>
+	<div id="console">
+		<textarea id="entry"></textarea>
+		<button id="send">Send</button>
+	</div>
+</div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$('#entry').focus();
+		var socket = io.connect('http://localhost:3000');
+		socket.on('message', function(msg) {
+			$('#log ul').append('<li>' + msg.data + '</li>');
+			$('#entry').focus();
+		});
+
+		$('#entry').keyup(function(event) {
+			if(event.keyCode == 13) {
+				var msg = $(this).val();
+				if(msg) {
+					socket.emit('emitData', { data: msg });
+					$(this).val('');
+				}
+			}
+		});
+		
+		$('#send').click(function(event) {
+				var msg = $('#entry').val();
+				if(msg) {
+					socket.emit('emitData', { data: msg });
+					$('#entry').val('');
+					//$('#entry').focus();
+				}
+		});
+
+	});
+</script>
