@@ -45,7 +45,7 @@ var Server = mongo.Server,
     Db = mongo.Db,
     BSON = mongo.BSONPure;
  
-var server = new Server('yogen:welcome@ds047387.mongolab.com', 47387, {auto_reconnect: true});
+/*var server = new Server('yogen:welcome@ds047387.mongolab.com', 47387, {auto_reconnect: true});
 db = new Db('heroku_app10771813', server);
  
 db.open(function(err, db) {
@@ -58,7 +58,10 @@ db.open(function(err, db) {
         });
     }
 });
+*/
 
+var server = new Server('mongodb://yogen:welcome@ds047387.mongolab.com:47387/heroku_app10771813');
+db = new Db('heroku_app10771813', server);
 
 /*mongo.Db.connect(mongoUri, function (err, db) {
   db = db;
